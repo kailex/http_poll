@@ -117,6 +117,7 @@ int main(int argc, char *argv[]) {
                             const char *msg = res.c_str();
                             send(poll_set[i].fd, msg, res.size(), MSG_NOSIGNAL);
                         }
+                        sleep(3);
                         exit(EXIT_SUCCESS);
                     } else {
                         close(poll_set[i].fd);
