@@ -13,10 +13,15 @@
 #include <fcntl.h>
 #include <poll.h>
 #include <getopt.h>
+#include <pthread.h>
 
 #define POLL_SIZE 2048
 
 using namespace std;
+
+void *fun(void *p) {
+    sleep(10);
+}
 
 int set_nonblock(int fd) {
     int flags;
@@ -54,7 +59,11 @@ int main(int argc, char *argv[]) {
                 exit(EXIT_FAILURE);
         }
     }
-                
+           
+    char *msg = "Thread";
+    pthread_t thread;
+    int ret = pthread_create(&thread, NULL, fun, (void*) msg);
+           
     // getting socket ready
     int master_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     set<int> slave_sockets;
@@ -117,7 +126,6 @@ int main(int argc, char *argv[]) {
                             const char *msg = res.c_str();
                             send(poll_set[i].fd, msg, res.size(), MSG_NOSIGNAL);
                         }
-                        sleep(3);
                         exit(EXIT_SUCCESS);
                     } else {
                         close(poll_set[i].fd);
