@@ -1,5 +1,6 @@
-add_definitions(-std=c++11) 
 cmake_minimum_required(VERSION 2.8)
+add_definitions(-std=c++11) 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 project (final)
 add_executable(final final.cpp)
-
+target_link_libraries(${PROJECT_NAME} PRIVATE pthread)
